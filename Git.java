@@ -46,8 +46,8 @@ public class Git {
         return HEAD;
     }
 
-    public void setHEAD(File hEAD) {
-        HEAD = hEAD;
+    public void setHEAD(File head) {
+        HEAD = head;
     }
 
     public static void main(String[] args) {
@@ -71,29 +71,29 @@ public class Git {
 
     public void gitInitialize() { 
         try {
-            int counter = 0;
+            int exisitingFileCount = 0;
 
             git = new File("git/");
             if (!git.mkdir()) { 
-                counter++;
+                exisitingFileCount++;
             }
             git.mkdir();
 
             objects = new File(git, "objects/");
             if (!objects.mkdir()) { 
-                counter++;
+                exisitingFileCount++;
             }
 
             index = new File(git, "index");
             if (!index.createNewFile()) { 
-                counter++;
+                exisitingFileCount++;
             }
             HEAD = new File(git, "HEAD");
             if (!HEAD.createNewFile()) { 
-                counter++;
+                exisitingFileCount++;
             }
 
-            if (counter == 4) { 
+            if (exisitingFileCount == 4) { 
                 System.out.println("Git Repository Already Exists");
             } else { 
                 System.out.println("Git Repository Created");
@@ -122,9 +122,9 @@ public class Git {
             throw new IllegalStateException("SHA-1 is not available", e);
         }
 
-        byte[] hash = digest.digest(fileBytes);
+        byte[] hashByteArray = digest.digest(fileBytes);
 
-        return HexFormat.of().formatHex(hash);
+        return HexFormat.of().formatHex(hashByteArray);
     }
 
     public void makeBlob(String filePath) throws IOException { 
@@ -135,11 +135,11 @@ public class Git {
         newBLOB.createNewFile();
 
         BufferedReader br = new BufferedReader(new FileReader(filePath));
-        String text = br.readLine();
+        String fileText = br.readLine();
         br.close();
 
         FileWriter writer = new FileWriter(newBLOB.getPath().toString());
-        writer.write(text + "\n");
+        writer.write(fileText + "\n");
         writer.close();
     }
 
