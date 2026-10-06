@@ -66,34 +66,34 @@ public class Git {
     }
 
     public Git() { 
-        makeGit();
+        gitInitialize();
     }
 
-    public void makeGit() { 
+    public void gitInitialize() { 
         try {
-            int ticker = 0;
+            int counter = 0;
 
             git = new File("git/");
             if (!git.mkdir()) { 
-                ticker++;
+                counter++;
             }
             git.mkdir();
 
             objects = new File(git, "objects/");
             if (!objects.mkdir()) { 
-                ticker++;
+                counter++;
             }
 
             index = new File(git, "index");
             if (!index.createNewFile()) { 
-                ticker++;
+                counter++;
             }
             HEAD = new File(git, "HEAD");
             if (!HEAD.createNewFile()) { 
-                ticker++;
+                counter++;
             }
 
-            if (ticker == 4) { 
+            if (counter == 4) { 
                 System.out.println("Git Repository Already Exists");
             } else { 
                 System.out.println("Git Repository Created");
