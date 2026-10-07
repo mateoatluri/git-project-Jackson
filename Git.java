@@ -55,10 +55,22 @@ public class Git {
         
 
         try {
-            System.out.println(hashFile("Hello.txt"));
-            newGit.makeBlob("Hello.txt");
 
-            newGit.addFileEntry("Hello.txt");
+            System.out.println("----making test.txt-----");
+
+            System.out.println(hashFile("test.txt"));
+            newGit.makeBlob("test.txt");
+
+            newGit.addFileEntry("test.txt");
+            
+            System.out.println("----making testFolder/test.txt-----");
+
+            System.out.println(hashFile("testFolder/test.txt"));
+            newGit.makeBlob("testFolder/test.txt");
+
+            newGit.addFileEntry("testFolder/test.txt");
+
+
         } catch (Exception e) {
             System.out.println("Cannot Run SHA-1 Hash File");
         }
