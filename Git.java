@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
+
+import javax.swing.text.AbstractDocument.Content;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.lang.StringBuilder;
 
 
 public class Git {
@@ -62,7 +66,22 @@ public class Git {
             newGit.makeBlob("test.txt");
 
             newGit.addFileEntry("test.txt");
+
+            // System.out.println("----making bigfile.txt-----");
+
+            // System.out.println(hashFile("bigfile.txt"));
+            // newGit.makeBlob("bigfile.txt");
+
+            // newGit.addFileEntry("bigfile.txt");
             
+
+            // System.out.println("----making Hello.txt-----");
+
+            // System.out.println(hashFile("Hello.txt"));
+            // newGit.makeBlob("Hello.txt");
+
+            // newGit.addFileEntry("Hello.txt");
+
             System.out.println("----making testFolder/test.txt-----");
 
             System.out.println(hashFile("testFolder/test.txt"));
@@ -147,26 +166,74 @@ public class Git {
         newBLOB.createNewFile();
 
         BufferedReader br = new BufferedReader(new FileReader(filePath));
-        String fileText = br.readLine();
-        br.close();
 
-        FileWriter writer = new FileWriter(newBLOB.getPath().toString());
-        writer.write(fileText + "\n");
+        FileWriter writer = new FileWriter(newBLOB);
+
+        int character = br.read();
+        while (character != -1) {
+            writer.write((char) character);
+            character = br.read();
+        }
+
+        br.close();
         writer.close();
+        
+        // StringBuilder fileContents = new StringBuilder();
+        // String fileLine = br.readLine();
+        
+        
+
+        // while (fileLine != null) {
+        //     fileContents.append(fileLine);
+
+        //     String nextFileLine = br.readLine();
+        //     if (nextFileLine != null) {
+        //         fileContents.append("\n");
+        //     }
+
+        //     fileLine = nextFileLine;
+        // }
+
+        // br.close();
+
+        // String finalContents = fileContents.toString();
+
+        // FileWriter writer = new FileWriter(newBLOB);
+        // writer.write(finalContents);
+        //writer.close();
     }
 
     public void addFileEntry(String filePath) throws IOException { 
         String hash = hashFile(filePath);
 
+
+        StringBuilder fileContents = new StringBuilder();
+
         BufferedReader br = new BufferedReader(new FileReader(index));
 
-        FileWriter writer = new FileWriter(index);
+        String newContents = hash + " " + filePath;
 
-        if (br.readLine() == null) { 
-            writer.write(hash + " " + filePath);
-        } else { 
-            writer.write("\n" + hash + " " + filePath);
+       
+        String contents = br.readLine();
+
+        while (contents != null) {
+            if (contents.equals(newContents)) {
+                br.close();
+                return;
+            } else {
+                fileContents.append(contents + "\n");
+                contents = br.readLine();
+            }
         }
+
+        
+        fileContents.append(newContents);
+
+        String finalContents = fileContents.toString();
+        
+        FileWriter writer = new FileWriter(index);
+        writer.write(finalContents);
+
         writer.close();
         br.close();
     }
