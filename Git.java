@@ -73,6 +73,8 @@ public class Git {
 
             newGit.addFileEntry("test.txt");
 
+            /////////
+
             System.out.println("----making Hello.txt-----");
 
             System.out.println(hashFile("Hello.txt"));
@@ -80,6 +82,7 @@ public class Git {
 
             newGit.addFileEntry("Hello.txt");
 
+            /////////
             
             System.out.println("----making bigfile.txt-----");
 
@@ -88,12 +91,46 @@ public class Git {
 
             newGit.addFileEntry("bigfile.txt");
 
-            System.out.println("----making testFolder/test.txt-----");
+            /////////
 
+            System.out.println("----making testFolder/test.txt-----");
+            
             System.out.println(hashFile("testFolder/test.txt"));
             newGit.makeBlob("testFolder/test.txt");
 
             newGit.addFileEntry("testFolder/test.txt");
+            
+            /////////
+            
+            // System.out.println("----making emptyFile.txt-----");
+
+            // System.out.println(hashFile("emptyFile.txt"));
+
+            // newGit.makeBlob("emptyFile.txt"); 
+
+            // newGit.addFileEntry("emptyFile.txt");
+
+            // System.out.println("----making emptyFile2.txt-----");
+
+            // System.out.println(hashFile("emptyFile2.txt"));
+
+            // newGit.makeBlob("emptyFile2.txt");
+            
+
+            // newGit.addFileEntry("emptyFile2.txt");
+
+            //System.out.println("----making emptyFolder-----");
+
+            //System.out.println(hashFile("emptyFolder"));
+            //newGit.makeBlob("testFolder/innerFolder/a.txt");
+
+            //newGit.addFileEntry("testFolder/innerFolder/a.txt");
+
+            
+
+
+
+            ////////////
 
             System.out.println("----making testFolder/innerFolder/a.txt-----");
 
@@ -193,7 +230,7 @@ public class Git {
 
         Path path = Path.of(filePath);
         if (!Files.isRegularFile(path)) {
-            throw new IOException("no such file: " + filePath);
+            throw new IOException("No such file: " + filePath);
         }
 
         byte[] fileBytes = Files.readAllBytes(path);
@@ -240,6 +277,11 @@ public class Git {
         FileWriter writer = new FileWriter(newBLOB);
 
         int character = br.read();
+
+        if (character != -1){
+
+        }
+
         while (character != -1) {
             writer.write((char) character);
             character = br.read();
